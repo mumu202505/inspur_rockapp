@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rockapp.mapper.BaseLithologyRecognitionReportMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rockapp.entity.BaseLithologyRecognitionReportEntity" id="baseLithologyRecognitionReportMap">
+        <result property="fId" column="f_id"/>
+        <result property="fReportName" column="f_report_name"/>
+        <result property="fProjectSectionId" column="f_project_section_id"/>
+        <result property="fCreateUserId" column="f_create_user_id"/>
+        <result property="fCreateUserName" column="f_create_user_name"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fLastModifyUserId" column="f_last_modify_user_id"/>
+        <result property="fLastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="fLastModifyTime" column="f_last_modify_time"/>
+        <result property="fReportContentFormat" column="f_report_content_format"/>
+        <result property="fLithologyRecognitionResultId" column="f_lithology_recognition_result_id"/>
+        <result property="fRemarkInformation" column="f_remark_information"/>
+        <result property="fFeedbackInformation" column="f_feedback_information"/>
+    </resultMap>
+
+    <select id="getFProtDateList" resultType="string">
+        SELECT
+            blrr.f_report_date
+        FROM
+            base_lithology_recognition_report blrr
+        WHERE
+            blrr.f_is_delete = 0
+            and
+            blrr.f_project_section_id= #{fId}
+        group by blrr.f_report_date
+    </select>
+
+
+    <select id="getFProtDateListTest" resultType="string">
+        SELECT
+        blrr.f_report_date
+        FROM
+        base_lithology_recognition_report blrr
+        <where>
+            f_is_delete = '0'
+            and blrr.f_project_section_id= #{fId}
+            <if test="recognitonReportDto.timeStart != null">
+                and blrr.f_report_date >= #{recognitonReportDto.timeStart}
+            </if>
+            <if test="recognitonReportDto.timeEnd != null">
+                and blrr.f_report_date &lt;= #{recognitonReportDto.timeEnd}
+            </if>
+        </where>
+        group by blrr.f_report_date
+        order by blrr.f_report_date desc
+    </select>
+
+    <select id="getReportTest" resultType="com.rockapp.entity.BaseLithologyRecognitionReportEntity">
+        select *
+        from base_lithology_recognition_report
+        <where>
+            f_is_delete = '0'
+            <if test="recognitionreport.fProjectSectionId != null ">
+                and f_project_section_id = #{recognitionreport.fProjectSectionId}
+            </if>
+            <if test="recognitionreport.fIsAll != null and recognitionreport.fIsAll == 1">
+                and f_create_user_id = #{recognitionreport.fUserId}
+            </if>
+            <if test="recognitionreport.fProjectSectionName != null and recognitionreport.fProjectSectionName != ''">
+                and f_project_section_name like CONCAT('%',#{recognitionreport.fProjectSectionName},'%')
+            </if>
+            <if test="recognitionreport.fReportName != null and recognitionreport.fReportName != ''">
+                and f_report_name like CONCAT('%',#{recognitionreport.fReportName},'%')
+            </if>
+            <if test="recognitionreport.fReportNikeName != null and recognitionreport.fReportNikeName != ''">
+                and f_report_nike_name like CONCAT('%',#{recognitionreport.fReportNikeName},'%')
+            </if>
+            and f_report_date = #{record}
+            order by f_create_time desc
+        </where>
+    </select>
+
+
+    <select id="getReport" resultType="com.rockapp.dto.BaseLithologyRecognitionReportDto">
+        select *
+        from base_lithology_recognition_report
+        <where>
+            f_is_delete = '0'
+            <if test="recognitionreport.fIsAll != null">
+                and f_create_user_id = #{recognitionreport.fUserId}
+            </if>
+            <if test="recognitionreport.fProjectSectionId != null and recognitionreport.fProjectSectionId != ''">
+                and f_project_section_id = #{recognitionreport.fProjectSectionId}
+            </if>
+            <if test="recognitionreport.fProjectSectionName != null and recognitionreport.fProjectSectionName != ''">
+                and f_project_section_name = #{recognitionreport.fProjectSectionName}
+            </if>
+            <if test="recognitionreport.fReportName != null and recognitionreport.fReportName != ''">
+                and f_report_name = #{recognitionreport.fReportName}
+            </if>
+            <if test="recognitionreport.fReportNikeName != null and recognitionreport.fReportNikeName != ''">
+                and f_report_nike_name = #{recognitionreport.fReportNikeName}
+            </if>
+            <if test="recognitionreport.timeStart != null">
+                and f_report_date >= #{recognitionreport.timeStart}
+            </if>
+            <if test="recognitionreport.timeEnd != null">
+                and f_report_date &lt;= #{recognitionreport.timeEnd}
+            </if>
+        </where>
+    </select>
+
+
+
+
+</mapper>

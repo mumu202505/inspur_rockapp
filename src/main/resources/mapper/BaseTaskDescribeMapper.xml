@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rockapp.mapper.BaseTaskDescribeMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rockapp.entity.BaseTaskDescribeEntity" id="baseTaskDescribeMap">
+        <result property="fId" column="f_id"/>
+        <result property="fSyncTaskClassId" column="f_sync_task_class_id"/>
+        <result property="fCreateUserId" column="f_create_user_id"/>
+        <result property="fCreateUserName" column="f_create_user_name"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fLastModifyUserId" column="f_last_modify_user_id"/>
+        <result property="fLastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="fLastModifyTime" column="f_last_modify_time"/>
+    </resultMap>
+
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rockapp.mapper.BaseRegionModelMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rockapp.entity.BaseRegionModelEntity" id="baseRegionModelMap">
+        <result property="fId" column="f_id"/>
+        <result property="fModelVersionIdentification" column="f_model_version_identification"/>
+        <result property="fModelVersionNumber" column="f_model_version_number"/>
+        <result property="fModelDescribe" column="f_model_describe"/>
+        <result property="fModelType" column="f_model_type"/>
+        <result property="fModelMode" column="f_model_mode"/>
+        <result property="fModelDeploy" column="f_model_deploy"/>
+        <result property="fModelClass" column="f_model_class"/>
+        <result property="fProvinces" column="f_provinces"/>
+        <result property="fCities" column="f_cities"/>
+        <result property="fDistrictsCounties" column="f_districts_counties"/>
+        <result property="fCreateUserId" column="f_create_user_id"/>
+        <result property="fCreateUserName" column="f_create_user_name"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fLastModifyUserId" column="f_last_modify_user_id"/>
+        <result property="fLastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="fLastModifyTime" column="f_last_modify_time"/>
+    </resultMap>
+
+
+</mapper>

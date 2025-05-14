@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rockapp.mapper.BaseAgreementMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rockapp.entity.BaseAgreementEntity" id="baseAgreementMap">
+        <result property="fId" column="f_id"/>
+        <result property="fUserAgreement" column="f_user_agreement"/>
+        <result property="fPrivacyPolicy" column="f_privacy_policy"/>
+        <result property="fSoftwareLicenseAgreement" column="f_software_license_agreement"/>
+        <result property="fLithologyKnowledge" column="f_lithology_knowledge"/>
+        <result property="fLicenseInformation" column="f_license_information"/>
+        <result property="fContactUs" column="f_contact_us"/>
+        <result property="fCurrentVersion" column="f_current_version"/>
+        <result property="fLastVersion" column="f_last_version"/>
+        <result property="fCreateUserId" column="f_create_user_id"/>
+        <result property="fCreateUserName" column="f_create_user_name"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fLastModifyUserId" column="f_last_modify_user_id"/>
+        <result property="fLastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="fLastModifyTime" column="f_last_modify_time"/>
+    </resultMap>
+
+
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rockapp.mapper.BaseUserProjectMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rockapp.entity.BaseUserProjectEntity" id="baseUserProjectMap">
+        <result property="fId" column="f_id"/>
+        <result property="fProjectSectionId" column="f_project_section_id"/>
+        <result property="fParentProjectId" column="f_parent_project_id"/>
+        <result property="fProjectSectionName" column="f_project_section_name"/>
+        <result property="fUserId" column="f_user_id"/>
+        <result property="fRole" column="f_role"/>
+        <result property="fCreateUserId" column="f_create_user_id"/>
+        <result property="fCreateUserName" column="f_create_user_name"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fLastModifyUserId" column="f_last_modify_user_id"/>
+        <result property="fLastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="fLastModifyTime" column="f_last_modify_time"/>
+    </resultMap>
+
+    <select id="getUserProjectList" resultType="com.rockapp.dto.UserProjectListDto">
+        select bu.f_id as fUserId,
+               bup.f_project_section_id as fId,
+               bu.f_user_name,
+               bu.f_nickname,
+               bup.f_role,
+               bu.f_head_portrait
+        from base_user bu
+                 right join base_user_project bup on bup.f_user_id = bu.f_id
+        where bup.f_project_section_id = #{id}
+          and f_is_delete = '0'
+    </select>
+
+    <select id="getProjectList" resultType="com.rockapp.dto.UserProjectListDto">
+        select bu.f_id,
+               bu.f_user_name,
+               bu.f_nickname,
+               bup.f_role
+        from base_user bu
+                 right join base_user_project bup on bup.f_user_id = bu.f_id
+        where (bup.f_parent_project_id = #{id} or bup.f_project_section_id = #{id})
+          and f_is_delete = '0'
+    </select>
+
+    <select id="getProjectPage" resultType="com.rockapp.dto.BaseUserProjectDto">
+        select bup.f_id,
+        bup.f_parent_project_id,
+        bup.f_project_section_name,
+        bup.f_project_section_id
+        from base_user_project bup
+        where bup.f_is_delete = '0'
+        and bup.f_user_id = #{fId}
+        and bup.f_parent_project_id is null
+        <if test="fProjectSectionName != null and fProjectSectionName != ''">
+            and bup.f_project_section_name like concat(#{fProjectSectionName}, '%')
+        </if>
+    </select>
+
+
+    <select id="getUserProjectTree" resultType="com.rockapp.dto.UserProjectAllDTO">
+        SELECT
+                f_id as fid,
+                f_project_section_id as fprojectSectionId,
+                f_project_section_name as fprojectSectionName,
+                f_parent_project_id as fparentProjectId,
+                f_role as frole
+                FROM base_user_project
+                WHERE f_user_id = #{userId} AND f_is_delete = 0
+
+    </select>
+
+
+</mapper>

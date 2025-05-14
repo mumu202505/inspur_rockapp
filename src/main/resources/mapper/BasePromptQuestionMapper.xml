@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rockapp.mapper.BasePromptQuestionMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rockapp.entity.BasePromptQuestionEntity" id="basePromptQuestionMap">
+        <result property="fId" column="f_id"/>
+        <result property="fPromptContent" column="f_prompt_content"/>
+        <result property="fCreateUserId" column="f_create_user_id"/>
+        <result property="fCreateUserName" column="f_create_user_name"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fLastModifyUserId" column="f_last_modify_user_id"/>
+        <result property="fLastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="fLastModifyTime" column="f_last_modify_time"/>
+    </resultMap>
+
+    <select id="getAllPromptQuestion" resultType="com.rockapp.dto.BasePromptQuestionDto">
+        select f_id,
+               f_prompt_content
+        from base_prompt_question
+        where f_is_delete = 0
+    </select>
+</mapper>

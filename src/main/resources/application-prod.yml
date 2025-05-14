@@ -1,0 +1,67 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://172.31.128.115:3306/rockapp?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+    username: root
+    password: yxsb@2025
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  data:
+    redis:
+      database: 1       # Redis数据库索引（默认为0） 1为用户信息/验证码等信息  0为分片上传数据
+      host: 172.31.128.115    # Redis服务器地址
+      port: 6379        # Redis服务器连接端口
+      username: default
+      password: yxsb@2025         # Redis服务器连接密码（默认为空）
+  # application.yml
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html   # Swagger UI 访问路径
+    tags-sorter: alpha       # 接口按字母排序
+  api-docs:
+    path: /v3/api-docs       # OpenAPI JSON 文档路径
+  default-produces-media-type: application/json
+
+  # application.yml
+security:
+  headers:
+    content-security-policy: "default-src 'self'; script-src 'self' https://trusted.cdn.example.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; form-action 'self'"
+
+yxsb:
+  # 请求地址
+  url: http://192.168.188.210:8000/yx_json/
+redisInfo:
+ host: 172.31.128.115
+ port: 6379
+minio:
+  url: http://172.31.128.115:9000
+  endpoint: http://172.31.128.115:9000
+  bucketName: rock-images
+  accessKey: ee6FP68W7fpHiuRQopcu
+  secretKey: MktqWnKyiQdMeUWccc6BZnXzltBfUj48nlbX85nU
+# mybatis-plus相关配置
+mybatis-plus:
+  # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
+  mapper-locations: classpath*:mapper/*.xml
+  # 指定实体类的包,多个package用逗号或者分号分隔
+  type-aliases-package: com.rockapp.entity
+  # 以下配置均有默认值,可以不设置
+  global-config:
+    db-config:
+      #主键类型 AUTO:"数据库ID自增" INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      #字段策略 IGNORED:"忽略判断"  NOT_NULL:"非 NULL 判断")  NOT_EMPTY:"非空判断"
+      field-strategy: NOT_EMPTY
+      #数据库类型
+      db-type: MYSQL
+  configuration:
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+    call-setters-on-nulls: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

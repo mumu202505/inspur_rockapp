@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rockapp.mapper.BaseUserMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rockapp.entity.BaseUserEntity" id="baseUserMap">
+        <result property="fId" column="f_id"/>
+        <result property="fUserName" column="f_user_name"/>
+        <result property="fPassword" column="f_password"/>
+        <result property="fPhone" column="f_phone"/>
+        <result property="fHeadPortrait" column="f_head_portrait"/>
+        <result property="fNickname" column="f_nickname"/>
+        <result property="fAutomaticCloudUpload" column="f_automatic_cloud_upload"/>
+        <result property="fRole" column="f_role"/>
+        <result property="fProvinces" column="f_provinces"/>
+        <result property="fCities" column="f_cities"/>
+        <result property="fDistrictsCounties" column="f_districts_counties"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fLastModifyUserId" column="f_last_modify_user_id"/>
+        <result property="fLastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="fLastModifyTime" column="f_last_modify_time"/>
+        <result property="fSalt" column="f_salt"/>
+        <result property="fModelLabelConfig" column="f_model_label_config"/>
+    </resultMap>
+
+
+</mapper>
