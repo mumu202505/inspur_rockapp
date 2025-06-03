@@ -80,9 +80,27 @@ public interface BaseUserProjectService extends IService<BaseUserProjectEntity> 
     List<UserProjectAllDTO> listAll();
 
     /**
+     * 查询项目/标段下报告和结果列表(树结构)
+     * @return
+     */
+    List<ProjectAllByIdDto> projectAllById(String fProjectSectionId,String fSectionId);
+
+
+    /**
+     * 根据项目/标段ID查询下所有报告和详情
+     * @return
+     */
+    List<UserProjectAllDTO> listAll(String fId);
+
+    /**
      * 移动标段
      * @param moveSectionDto
      */
     void moveSection(MoveSectionDto moveSectionDto);
+
+    /**
+     * 判断是否有权限
+     */
+    void isRole(String fProjectSectionId);
 }
 

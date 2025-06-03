@@ -107,7 +107,8 @@ public class UserProjectController {
         List<BaseUserProjectEntity> baseUserProjectEntityList = baseUserProjectService.list(Wrappers.<BaseUserProjectEntity>lambdaQuery()
                 .eq(BaseUserProjectEntity::getFParentProjectId, parentProjectId)
                 .eq(BaseUserProjectEntity::getFUserId, UserUtil.getUser().getFId())
-                .groupBy(BaseUserProjectEntity::getFId));
+                .groupBy(BaseUserProjectEntity::getFId)
+                .orderByDesc(BaseUserProjectEntity::getFCreateTime));
         List<BaseUserProjectDto> baseUserProjectDtos = CommonBeanUtils.dtoListTransfer(baseUserProjectEntityList, BaseUserProjectDto.class);
         return ResultUtil.success(baseUserProjectDtos);
     }
@@ -118,5 +119,18 @@ public class UserProjectController {
         return ResultUtil.success( baseUserProjectService.listAll());
     }
 
+    @GetMapping("/getProjectAllById")
+    @Operation(summary = "查询项目/标段下报告和结果列表")
+    public ResultUtil projectAllById(@RequestParam(value = "fProjectSectionId",required = false) String fProjectSectionId,
+                                        @RequestParam(value = "fSectionId",required = false) String fSectionId) {
+        return ResultUtil.success( baseUserProjectService.projectAllById(fProjectSectionId,fSectionId));
+    }
+
+    @GetMapping("/isRole")
+    @Operation(summary = "查询当前登录账号是否有编辑权限")
+    public ResultUtil isRole(@RequestParam(value = "fProjectSectionId",required = false) String fProjectSectionId) {
+        baseUserProjectService.isRole(fProjectSectionId);
+        return ResultUtil.SUCCESS_NO_DATA;
+    }
 
 }

@@ -15,6 +15,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -24,6 +25,7 @@ import static org.springframework.web.servlet.support.WebContentGenerator.METHOD
 
 @Service
 @Slf4j
+@Transactional
 public class UniversalityServiceImpl implements UniversalityService {
     private static final String CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     @Autowired

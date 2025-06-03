@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 
 @Service("baseLithologyRecognitionReportService")
+@Transactional
 public class BaseLithologyRecognitionReportServiceImpl extends ServiceImpl<BaseLithologyRecognitionReportMapper, BaseLithologyRecognitionReportEntity> implements BaseLithologyRecognitionReportService {
     @Autowired
     BaseLithologyRecognitionReportMapper baseLithologyRecognitionReportMapper;
@@ -77,7 +78,7 @@ public class BaseLithologyRecognitionReportServiceImpl extends ServiceImpl<BaseL
     @Override
     public Page getProjectReport(String fId, Integer current, Integer size) {
         Page page = new Page<>(current == null ? 1 : current, size == null ? 10 : size);
-        //获取出当前项目下所有识别结果日期
+        //获取出当前项目下所有识别报告日期
         Page<String> fReportDateList = baseLithologyRecognitionReportMapper.getFProtDateList(page, fId);
         //查找出所有识别日期下的记录
         List<String> records = fReportDateList.getRecords();
@@ -175,7 +176,6 @@ public class BaseLithologyRecognitionReportServiceImpl extends ServiceImpl<BaseL
     }
 
     @Override
-    @Transactional
     public void moveProjectReport(MoveProjectResultDto moveProjectResultDto) {
         //校验权限
         if (StringUtils.isNotEmpty(moveProjectResultDto.getFTargetProjectId())) {

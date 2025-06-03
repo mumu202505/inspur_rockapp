@@ -11,7 +11,8 @@ public enum ResultStatusEnum implements IResultStatus {
     ERROR_SERVICE(500, "服务器异常，请稍后重试..."),
     VALIDATE_ERROR(400, "数据校验错误"),
     UNAUTHORIZED(401, "认证失败"),
-    FORBIDDEN(403, "无权限访问");
+    FORBIDDEN(403, "无权限访问"),
+    ISROLE(200, "权限通过");
 
     private Integer code;
     private String msg;

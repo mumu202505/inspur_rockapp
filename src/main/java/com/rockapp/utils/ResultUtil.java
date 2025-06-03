@@ -15,6 +15,7 @@ public class ResultUtil<T> implements Serializable {
     public static final ResultUtil ERROR_ARG = new ResultUtil(ResultStatusEnum.ERROR_ARG, null);
     public static final ResultUtil ERROR_SERVICE = new ResultUtil(ResultStatusEnum.ERROR_SERVICE, null);
     public static final ResultUtil VALIDATE_ERROR = new ResultUtil(ResultStatusEnum.VALIDATE_ERROR, null);
+    public static final ResultUtil ISROLE = new ResultUtil(ResultStatusEnum.ISROLE, null);
 
     private Integer code;
     private String msg;

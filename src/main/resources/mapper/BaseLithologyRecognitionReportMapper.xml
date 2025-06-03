@@ -33,6 +33,19 @@
     </select>
 
 
+    <select id="listAllById" resultType="string">
+        SELECT
+            blrr.f_report_date
+        FROM
+            base_lithology_recognition_report blrr
+        WHERE
+            blrr.f_is_delete = 0
+          and
+            blrr.f_project_section_id= #{fId}
+        group by blrr.f_report_date
+    </select>
+
+
     <select id="getFProtDateListTest" resultType="string">
         SELECT
         blrr.f_report_date

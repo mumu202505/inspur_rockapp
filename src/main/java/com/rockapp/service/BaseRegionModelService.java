@@ -27,6 +27,13 @@ public interface BaseRegionModelService extends IService<BaseRegionModelEntity> 
      */
     List<BaseRegionModelDto> getRegionModel();
 
+
+    /**
+     * 获取在线云端模型
+     * @return
+     */
+    List<BaseRegionModelDto> getModel();
+
     /**
      * 获取全部岩性类别
      * @return

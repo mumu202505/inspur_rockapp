@@ -19,12 +19,21 @@ import java.util.List;
 @Mapper
 public interface BaseLithologyRecognitionReportMapper extends BaseMapper<BaseLithologyRecognitionReportEntity> {
     /**
-     * 查询某项目下所有的报告日期
+     * 查询某项目下所有的报告日期(分页)
      *
      * @return
      */
 
     public Page<String> getFProtDateList(@Param("page") Page page, @Param("fId") String fId);
+
+
+    /**
+     * 查询某项目下所有的报告日期
+     *
+     * @return
+     */
+
+    public List<String> listAllById(@Param("fId") String fId);
 
 
     /**

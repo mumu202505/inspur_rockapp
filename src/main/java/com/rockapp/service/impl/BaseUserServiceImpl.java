@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 @Service("baseUserService")
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEntity> implements BaseUserService {
 
     private final RedisService redisService;
@@ -40,7 +41,6 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
 
 
     @Override
-    @Transactional
     public void insertUser(AccountDto account) {
         if (validate(account.getFPassword())) {
             BaseUserEntity baseUser = baseUserMapper.selectOne(Wrappers.<BaseUserEntity>query().lambda().eq(BaseUserEntity::getFUserName, account.getFUserName()));
@@ -60,7 +60,6 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
 
 
     @Override
-    @Transactional
     public void updatepsd(BaseUserPassWordDto baseUserPassWordDto) {
         log.info("===============进入根据原密码修改密码方式============");
         //验证原密码
@@ -101,7 +100,6 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     }
 
     @Override
-    @Transactional
     public void updatePhone(UpdatePhoneDto updatePhoneDto) {
         log.info("===============进入绑定用户手机号方式============");
         //校验手机号是否唯一
@@ -192,7 +190,6 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     }
 
     @Override
-    @Transactional
     public void getBackPsd(UpdatePasswordDto updatePasswordDto) {
         log.info("===============进入找回密码方式============");
         // TODO 添加验证码方式

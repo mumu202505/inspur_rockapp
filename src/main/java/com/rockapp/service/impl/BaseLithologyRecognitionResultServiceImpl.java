@@ -24,9 +24,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service("baseLithologyRecognitionResultService")
+@Transactional
 public class BaseLithologyRecognitionResultServiceImpl extends ServiceImpl<BaseLithologyRecognitionResultMapper, BaseLithologyRecognitionResultEntity> implements BaseLithologyRecognitionResultService {
 
     @Autowired
@@ -108,6 +111,9 @@ public class BaseLithologyRecognitionResultServiceImpl extends ServiceImpl<BaseL
         }
 
         //保存岩性识别结果
+        if (StringUtils.isNotEmpty(recognitionResultDto.getFSectionId())) {
+            recognitionResultDto.setFProjectSectionId(null);
+        }
         BaseLithologyRecognitionResultEntity baseLithologyRecognitionResultEntity = CommonBeanUtils.dtoTransfer(recognitionResultDto, BaseLithologyRecognitionResultEntity.class);
         int insert = baseLithologyRecognitionResultMapper.insert(baseLithologyRecognitionResultEntity);
         if (insert > 0) {
@@ -136,58 +142,138 @@ public class BaseLithologyRecognitionResultServiceImpl extends ServiceImpl<BaseL
     }
 
     @Override
-    public Page getProjectResult(String fId, Integer current, Integer size) {
+    public Page<ProjectResultAllDto> getProjectResult(String fId, Integer current, Integer size) {
+        // 1. 初始化分页参数
         Page page = new Page<>(current == null ? 1 : current, size == null ? 10 : size);
-        //获取出当前项目下所有识别结果日期
+
+        // 2. 获取当前项目下的所有识别日期（分页）
         Page<String> fIdentifyDateList = baseLithologyRecognitionResultMapper.getFIdentifyDateList(page, fId);
-        //查找出所有识别日期下的记录
-        List<String> records = fIdentifyDateList.getRecords();
-        List<ProjectResultAllDto> objects = new ArrayList<>();
-        for (String record : records) {
-            if (StringUtils.isNotEmpty(record)) {
-                ProjectResultAllDto projectResultAllDto = new ProjectResultAllDto();
-                List<BaseLithologyRecognitionResultEntity> resultEntities = baseLithologyRecognitionResultMapper.selectList(Wrappers.<BaseLithologyRecognitionResultEntity>lambdaQuery()
+
+        // 3. 如果没有数据，直接返回空分页
+        if (fIdentifyDateList.getRecords().isEmpty()) {
+            return new Page<>(fIdentifyDateList.getCurrent(), fIdentifyDateList.getSize(), fIdentifyDateList.getTotal());
+        }
+
+        // 4. 批量查询这些日期下的所有识别结果（避免循环中多次查询）
+        List<BaseLithologyRecognitionResultEntity> allResults = baseLithologyRecognitionResultMapper.selectList(
+                Wrappers.<BaseLithologyRecognitionResultEntity>lambdaQuery()
                         .and(wq -> wq
                                 .eq(BaseLithologyRecognitionResultEntity::getFProjectSectionId, fId)
                                 .or()
                                 .eq(BaseLithologyRecognitionResultEntity::getFSectionId, fId)
                         )
-                        .eq(BaseLithologyRecognitionResultEntity::getFIdentifyDate, record));
+                        .in(BaseLithologyRecognitionResultEntity::getFIdentifyDate, fIdentifyDateList.getRecords())
+        );
 
-                projectResultAllDto.setFIdentifyDate(record);
-                List<BaseLithologyRecognitionResultDto> baseLithologyRecognitionResultDtos = CommonBeanUtils.dtoListTransfer(resultEntities, BaseLithologyRecognitionResultDto.class);
-                for (BaseLithologyRecognitionResultDto baseLithologyRecognitionResultDto : baseLithologyRecognitionResultDtos) {
-                    //查询出关联的结果下的项目名称和标段名称
-                    if (StringUtils.isNotEmpty(baseLithologyRecognitionResultDto.getFProjectSectionId())) {
-                        //查询项目名称
-                        BaseUserProjectEntity baseUserProjectEntity = baseUserProjectMapper.selectById(baseLithologyRecognitionResultDto.getFProjectSectionId());
-                        baseLithologyRecognitionResultDto.setFProjectName(baseUserProjectEntity.getFProjectSectionName());
-                    }
-                    if (StringUtils.isNotEmpty(baseLithologyRecognitionResultDto.getFSectionId())) {
-                        //查询标段名称
-                        BaseUserProjectEntity baseUserProjectEntity = baseUserProjectMapper.selectById(baseLithologyRecognitionResultDto.getFSectionId());
-                        baseLithologyRecognitionResultDto.setFSectionName(baseUserProjectEntity.getFProjectSectionName());
-                        //查询父项目名称
-                        BaseUserProjectEntity baseUserProject = baseUserProjectMapper.selectById(baseLithologyRecognitionResultDto.getFProjectSectionId());
-                        baseLithologyRecognitionResultDto.setFProjectName(baseUserProject.getFProjectSectionName());
+        // 5. 收集所有关联的项目ID（避免N+1查询问题）
+        Set<String> projectIds = allResults.stream()
+                .flatMap(r -> Stream.of(r.getFProjectSectionId(), r.getFSectionId()))
+                .filter(StringUtils::isNotEmpty)
+                .collect(Collectors.toSet());
+
+        // 6. 批量查询项目名称（一次性获取所有名称）
+        Map<String, String> projectNameMap = new HashMap<>();
+        if (!projectIds.isEmpty()) {
+            baseUserProjectMapper.selectBatchIds(projectIds).forEach(
+                    p -> projectNameMap.put(p.getFProjectSectionId(), p.getFProjectSectionName())
+            );
+        }
+
+        // 7. 按识别日期分组结果
+        Map<String, List<BaseLithologyRecognitionResultEntity>> resultsByDate = allResults.stream()
+                .collect(Collectors.groupingBy(BaseLithologyRecognitionResultEntity::getFIdentifyDate));
+
+        // 8. 构建最终DTO列表
+        List<ProjectResultAllDto> dtos = new ArrayList<>();
+        for (String date : fIdentifyDateList.getRecords()) {
+            List<BaseLithologyRecognitionResultEntity> dateResults = resultsByDate.get(date);
+            if (dateResults == null || dateResults.isEmpty()) continue;
+
+            ProjectResultAllDto dto = new ProjectResultAllDto();
+            dto.setFIdentifyDate(date);
+
+            // 转换实体为DTO
+            List<BaseLithologyRecognitionResultDto> resultDtos = CommonBeanUtils.dtoListTransfer(dateResults,
+                    BaseLithologyRecognitionResultDto.class);
+
+            // 设置项目/标段名称（从预加载的Map中获取）
+            for (BaseLithologyRecognitionResultDto resultDto : resultDtos) {
+                if (StringUtils.isNotEmpty(resultDto.getFProjectSectionId())) {
+                    resultDto.setFProjectName(projectNameMap.get(resultDto.getFProjectSectionId()));
+                }
+                if (StringUtils.isNotEmpty(resultDto.getFSectionId())) {
+                    resultDto.setFSectionName(projectNameMap.get(resultDto.getFSectionId()));
+                    // 如果需要，设置父项目名称
+                    if (StringUtils.isNotEmpty(resultDto.getFProjectSectionId())) {
+                        resultDto.setFProjectName(projectNameMap.get(resultDto.getFProjectSectionId()));
                     }
                 }
-                projectResultAllDto.setResultDtoList(baseLithologyRecognitionResultDtos);
-                objects.add(projectResultAllDto);
             }
+
+            dto.setResultDtoList(resultDtos);
+            dtos.add(dto);
         }
-        // 创建全新的Page对象，完全替换内容
-        Page<ProjectResultAllDto> newPage = new Page<>();
-        newPage.setRecords(objects);
-        newPage.setCurrent(fIdentifyDateList.getCurrent());
-        newPage.setSize(fIdentifyDateList.getSize());
-        newPage.setTotal(fIdentifyDateList.getTotal());
-        //返回分页信息
-        return newPage;
+
+        // 9. 返回分页结果
+        Page<ProjectResultAllDto> resultPage = new Page<>();
+        resultPage.setRecords(dtos);
+        resultPage.setCurrent(fIdentifyDateList.getCurrent());
+        resultPage.setSize(fIdentifyDateList.getSize());
+        resultPage.setTotal(fIdentifyDateList.getTotal());
+
+        return resultPage;
     }
+//    public Page getProjectResult(String fId, Integer current, Integer size) {
+//        Page page = new Page<>(current == null ? 1 : current, size == null ? 10 : size);
+//        //获取出当前项目下所有识别结果日期
+//        Page<String> fIdentifyDateList = baseLithologyRecognitionResultMapper.getFIdentifyDateList(page, fId);
+//        //查找出所有识别日期下的记录
+//        List<String> records = fIdentifyDateList.getRecords();
+//        List<ProjectResultAllDto> objects = new ArrayList<>();
+//        for (String record : records) {
+//            if (StringUtils.isNotEmpty(record)) {
+//                ProjectResultAllDto projectResultAllDto = new ProjectResultAllDto();
+//                List<BaseLithologyRecognitionResultEntity> resultEntities = baseLithologyRecognitionResultMapper.selectList(Wrappers.<BaseLithologyRecognitionResultEntity>lambdaQuery()
+//                        .and(wq -> wq
+//                                .eq(BaseLithologyRecognitionResultEntity::getFProjectSectionId, fId)
+//                                .or()
+//                                .eq(BaseLithologyRecognitionResultEntity::getFSectionId, fId)
+//                        )
+//                        .eq(BaseLithologyRecognitionResultEntity::getFIdentifyDate, record));
+//
+//                projectResultAllDto.setFIdentifyDate(record);
+//                List<BaseLithologyRecognitionResultDto> baseLithologyRecognitionResultDtos = CommonBeanUtils.dtoListTransfer(resultEntities, BaseLithologyRecognitionResultDto.class);
+//                for (BaseLithologyRecognitionResultDto baseLithologyRecognitionResultDto : baseLithologyRecognitionResultDtos) {
+//                    //查询出关联的结果下的项目名称和标段名称
+//                    if (StringUtils.isNotEmpty(baseLithologyRecognitionResultDto.getFProjectSectionId())) {
+//                        //查询项目名称
+//                        BaseUserProjectEntity baseUserProjectEntity = baseUserProjectMapper.selectById(baseLithologyRecognitionResultDto.getFProjectSectionId());
+//                        baseLithologyRecognitionResultDto.setFProjectName(baseUserProjectEntity.getFProjectSectionName());
+//                    }
+//                    if (StringUtils.isNotEmpty(baseLithologyRecognitionResultDto.getFSectionId())) {
+//                        //查询标段名称
+//                        BaseUserProjectEntity baseUserProjectEntity = baseUserProjectMapper.selectById(baseLithologyRecognitionResultDto.getFSectionId());
+//                        baseLithologyRecognitionResultDto.setFSectionName(baseUserProjectEntity.getFProjectSectionName());
+//                        //查询父项目名称
+//                        BaseUserProjectEntity baseUserProject = baseUserProjectMapper.selectById(baseLithologyRecognitionResultDto.getFProjectSectionId());
+//                        baseLithologyRecognitionResultDto.setFProjectName(baseUserProject.getFProjectSectionName());
+//                    }
+//                }
+//                projectResultAllDto.setResultDtoList(baseLithologyRecognitionResultDtos);
+//                objects.add(projectResultAllDto);
+//            }
+//        }
+//        // 创建全新的Page对象，完全替换内容
+//        Page<ProjectResultAllDto> newPage = new Page<>();
+//        newPage.setRecords(objects);
+//        newPage.setCurrent(fIdentifyDateList.getCurrent());
+//        newPage.setSize(fIdentifyDateList.getSize());
+//        newPage.setTotal(fIdentifyDateList.getTotal());
+//        //返回分页信息
+//        return newPage;
+//    }
 
     @Override
-    @Transactional
     public void moveProjectResult(MoveProjectResultDto moveProjectResultDto) {
         //校验权限
         if (StringUtils.isNotEmpty(moveProjectResultDto.getFTargetProjectId())) {
@@ -213,7 +299,6 @@ public class BaseLithologyRecognitionResultServiceImpl extends ServiceImpl<BaseL
     }
 
     @Override
-    @Transactional
     public void deleteProjectResult(String fId) {
         //校验权限
         isJurisdiction(fId, null);
@@ -271,7 +356,7 @@ public class BaseLithologyRecognitionResultServiceImpl extends ServiceImpl<BaseL
     void isJurisdictionProject(String fId) {
         BaseUserEntity user = UserUtil.getUser();
         BaseUserProjectEntity baseUserProjectEntity = baseUserProjectMapper.selectOne(Wrappers.<BaseUserProjectEntity>lambdaQuery()
-                .eq(BaseUserProjectEntity::getFId, fId)
+                .eq(BaseUserProjectEntity::getFProjectSectionId, fId)
                 .eq(BaseUserProjectEntity::getFUserId, user.getFId()));
         if (ObjectUtils.isEmpty(baseUserProjectEntity) || baseUserProjectEntity.getFRole() == CommonConstant.THREE_ROLE_CODE) {
             throw new ServiceException(SysResultEnum.USER_PROJECT_NOT_JURISDICTION);

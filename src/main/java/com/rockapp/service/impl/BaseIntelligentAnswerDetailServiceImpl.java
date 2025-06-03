@@ -9,9 +9,11 @@ import com.rockapp.service.BaseIntelligentAnswerDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("baseIntelligentAnswerDetailService")
+@Transactional
 public class BaseIntelligentAnswerDetailServiceImpl extends ServiceImpl<BaseIntelligentAnswerDetailMapper, BaseIntelligentAnswerDetailEntity> implements BaseIntelligentAnswerDetailService {
     @Autowired
     private BaseIntelligentAnswerDetailMapper baseIntelligentAnswerDetailMapper;

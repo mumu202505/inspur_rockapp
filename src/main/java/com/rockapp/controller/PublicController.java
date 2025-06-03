@@ -1,9 +1,17 @@
 package com.rockapp.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.net.HttpHeaders;
+import com.rockapp.core.constant.CommonConstant;
+import com.rockapp.core.exception.ServiceException;
 import com.rockapp.dto.AccountDto;
 import com.rockapp.dto.AccountLoginDto;
 import com.rockapp.dto.UpdatePasswordDto;
+import com.rockapp.entity.BaseUserProjectEntity;
+import com.rockapp.enums.result.SysResultEnum;
+import com.rockapp.mapper.BaseUserProjectMapper;
+import com.rockapp.service.BaseUserProjectService;
 import com.rockapp.service.BaseUserService;
 import com.rockapp.service.UniversalityService;
 import com.rockapp.utils.AesUtil;
@@ -251,9 +259,17 @@ public class PublicController {
             }
         }
     }
+//    @Autowired
+//    private BaseUserProjectService baseUserProjectService;
+//    @GetMapping("/getProjectAllById")
+//    @Operation(summary = "查询项目/标段下报告和结果列表(树结构)")
+//    public ResultUtil projectAllById(@RequestParam(value = "fProjectSectionId",required = false) String fProjectSectionId,
+//                                     @RequestParam(value = "fSectionId",required = false) String fSectionId) {
+//        return ResultUtil.success( baseUserProjectService.projectAllById(fProjectSectionId,fSectionId));
+//    }
 
     public static void main(String[] args) {
-        String km1IIxJo6noJ2c6V = AesUtil.encrypt("QQwhl521@", "km1IIxJo6noJ2c6V");
+        String km1IIxJo6noJ2c6V = AesUtil.encrypt("Test123.AAA", "km1IIxJo6noJ2c6V");
         System.out.println(km1IIxJo6noJ2c6V);
         String km1IIxJo6noJ2c6V1 = AesUtil.decrypt(km1IIxJo6noJ2c6V);
         System.out.println(km1IIxJo6noJ2c6V1);

@@ -66,7 +66,7 @@ public enum SysResultEnum implements IResultStatus {
     USER_PROJECT_REPORT_EXISTED(40402, "该项目下有关联报告，无法删除"),
     DELETE_USER_PROJECT_FAIL(40403, "用户删除失败"),
     USER_PROJECT_NOT_EXIST(40404, "项目不存在,添加失败"),
-    USER_PROJECT_NOT_INSERT(40405, "此项目不是你创建，无法在此项目下进行操作"),
+    USER_PROJECT_NOT_INSERT(40405, "此项目无操作权限，无法在此项目下进行操作"),
     USER_PROJECT_NOT_JURISDICTION(40406, "无操作权限"),
     USER_PROJECT_NOT_RESULT(40407, "识别结果不存在，无法删除"),
     USER_PROJECT_NOT_REPORT(40407, "识别报告不存在，无法删除"),

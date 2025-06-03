@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户项目表
@@ -48,6 +49,13 @@ public interface BaseUserProjectMapper extends BaseMapper<BaseUserProjectEntity>
      * @return
      */
     List<UserProjectAllDTO> getUserProjectTree(@Param("userId") String userId);
+
+    /**
+     * 查询项目下所有标段
+     * @param fProjectSectionId
+     * @return
+     */
+    List<Map<String,String>> selectProjectSectionIdList(@Param("fProjectSectionId") String fProjectSectionId);
 
 
 }

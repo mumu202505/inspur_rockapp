@@ -9,9 +9,11 @@ import com.rockapp.utils.CommonBeanUtils;
 import com.rockapp.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("baseFeedbackService")
+@Transactional
 public class BaseFeedbackServiceImpl extends ServiceImpl<BaseFeedbackMapper, BaseFeedbackEntity> implements BaseFeedbackService {
     @Autowired
     BaseFeedbackMapper baseFeedbackMapper;

@@ -33,7 +33,7 @@ public interface BaseLithologyRecognitionReportService extends IService<BaseLith
     void saveRemark(RemarkDto remarkDto);
 
     /**
-     *
+     *查询项目/标段下所有报告
      * @param fId
      * @param current
      * @param size

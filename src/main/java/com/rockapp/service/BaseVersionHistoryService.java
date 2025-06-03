@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.rockapp.dto.BaseVersionHistoryUplodDto;
 import com.rockapp.entity.BaseVersionHistoryEntity;
 import io.minio.errors.*;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -40,5 +43,11 @@ public interface BaseVersionHistoryService extends IService<BaseVersionHistoryEn
      * @param file
      */
     void uploadApp(MultipartFile file, BaseVersionHistoryUplodDto versionHistoryUplodDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException;
+
+    /**
+     * word转为pdf
+     * @param file
+     */
+    void convertWordToPdf(MultipartFile file, HttpServletResponse response) throws IOException;
 }
 

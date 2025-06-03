@@ -9,18 +9,20 @@ import com.rockapp.core.exception.ServiceException;
 import com.rockapp.dto.*;
 import com.rockapp.entity.*;
 import com.rockapp.service.*;
-import com.rockapp.utils.CommonBeanUtils;
-import com.rockapp.utils.HttpRequestUtil;
-import com.rockapp.utils.ResultUtil;
+import com.rockapp.utils.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,9 +109,6 @@ public class UniversalityController {
     @PostMapping(value = "/yxsb")
     public ResultUtil yxsb(@RequestBody String base64) throws IOException {
         Map<String, String> bodys = new HashMap<String, String>();
-        //转换Base64
-//        byte[] fileBytes = file.getBytes();
-//        String base64 = Base64.getEncoder().encodeToString(fileBytes);
         bodys.put("image", base64);
         String baseStr = objectMapper.writeValueAsString(bodys);
         try {
@@ -122,5 +121,24 @@ public class UniversalityController {
             throw new ServiceException("调用失败");
         }
     }
+
+    @Operation(summary = "转换word文件为pdf")
+    @PostMapping(value = "/convert", produces = MediaType.APPLICATION_PDF_VALUE,headers = "content-type=multipart/form-data")
+    public void convertWordToPdf(@RequestParam("file") MultipartFile file, HttpServletResponse response) throws IOException {
+         baseVersionHistoryService.convertWordToPdf(file,response);
+    }
+
+
+
+    @Autowired
+    private OpenAiUtils openAiUtils;
+
+    @Operation(summary = "获取openAi返回值")
+    @PostMapping("/auth/ai")
+    public ResultUtil getAiRespondBody(@RequestBody String content) throws Exception {
+        String respContent =openAiUtils.getAiRespondBody(content);
+        return ResultUtil.success(respContent);
+    }
+
 
 }

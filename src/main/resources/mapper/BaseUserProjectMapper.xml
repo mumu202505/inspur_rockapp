@@ -55,6 +55,7 @@
         <if test="fProjectSectionName != null and fProjectSectionName != ''">
             and bup.f_project_section_name like concat(#{fProjectSectionName}, '%')
         </if>
+        order by bup.f_create_time desc
     </select>
 
 
@@ -68,6 +69,14 @@
                 FROM base_user_project
                 WHERE f_user_id = #{userId} AND f_is_delete = 0
 
+    </select>
+
+    <select id="selectProjectSectionIdList" resultType="map">
+        SELECT f_project_section_id,
+               f_project_section_name
+        FROM base_user_project
+        WHERE f_parent_project_id = #{fProjectSectionId}
+          AND f_is_delete = 0
     </select>
 
 

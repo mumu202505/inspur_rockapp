@@ -141,6 +141,14 @@ public class AuthController {
         return ResultUtil.success(baseRegionModel);
     }
 
+    @PostMapping("/getModel")
+    @ResponseBody
+    @Operation(summary = "获取在线云端模型")
+    public ResultUtil getModel() {
+        List<BaseRegionModelDto> baseRegionModel = baseRegionModelService.getModel();
+        return ResultUtil.success(baseRegionModel);
+    }
+
     @PostMapping("/getAllModel")
     @ResponseBody
     @Operation(summary = "获取全部岩性类别")

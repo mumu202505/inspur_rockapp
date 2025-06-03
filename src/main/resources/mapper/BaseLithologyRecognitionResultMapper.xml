@@ -212,7 +212,7 @@
             and blrr.f_identify_date &lt;= #{recognitionresult.timeEnd}
         </if>
         group by blrr.f_identify_date
-        order by blrr.f_create_time desc
+        order by blrr.f_identify_date desc
     </select>
 
 

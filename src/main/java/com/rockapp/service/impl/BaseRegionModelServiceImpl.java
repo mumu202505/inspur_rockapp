@@ -14,6 +14,7 @@ import com.rockapp.utils.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service("baseRegionModelService")
 @RequiredArgsConstructor
+@Transactional
 public class BaseRegionModelServiceImpl extends ServiceImpl<BaseRegionModelMapper, BaseRegionModelEntity> implements BaseRegionModelService {
     private final RedisService redisService;
     @Autowired
@@ -69,6 +71,13 @@ public class BaseRegionModelServiceImpl extends ServiceImpl<BaseRegionModelMappe
                 .eq(BaseRegionModelEntity::getFCities, user.getFCities())
                 .eq(BaseRegionModelEntity::getFDistrictsCounties, user.getFDistrictsCounties())
                 .eq(BaseRegionModelEntity::getFModelMode, "2"));
+        return CommonBeanUtils.dtoListTransfer(baseRegionModelEntities, BaseRegionModelDto.class);
+    }
+
+    @Override
+    public List<BaseRegionModelDto> getModel() {
+        List<BaseRegionModelEntity> baseRegionModelEntities = baseRegionModelMapper.selectList(Wrappers.<BaseRegionModelEntity>lambdaQuery()
+                .eq(BaseRegionModelEntity::getFModelMode, "3"));
         return CommonBeanUtils.dtoListTransfer(baseRegionModelEntities, BaseRegionModelDto.class);
     }
 
