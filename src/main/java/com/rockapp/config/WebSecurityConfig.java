@@ -88,14 +88,17 @@ public class WebSecurityConfig {
                         .requestMatchers("/").authenticated()
                         .requestMatchers(
                                 "/public/**",
+                                "/universality/**",
+                                "/product/**"
+                        ).permitAll()
+                        // 将Swagger相关路径设置为需要认证
+                        .requestMatchers(
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
-                                "/webjars/**",
-                                "/universality/**",
-                                "/product/**"
-                        ).permitAll()
+                                "/webjars/**"
+                        ).authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
