@@ -3,10 +3,6 @@ package com.rockapp.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rockapp.dto.BaseFeedbackDto;
 import com.rockapp.entity.BaseFeedbackEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
-import java.util.Map;
 
 /**
  * 用户反馈表

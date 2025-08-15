@@ -1,10 +1,10 @@
 package com.rockapp.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rockapp.entity.BaseAgreementEntity;
 import com.rockapp.mapper.BaseAgreementMapper;
 import com.rockapp.service.BaseAgreementService;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 

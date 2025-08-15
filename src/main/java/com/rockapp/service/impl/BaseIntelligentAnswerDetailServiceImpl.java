@@ -1,6 +1,7 @@
 package com.rockapp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rockapp.dto.DetailChatDto;
 import com.rockapp.dto.SaveDetailDto;
 import com.rockapp.entity.BaseIntelligentAnswerDetailEntity;
@@ -8,7 +9,6 @@ import com.rockapp.mapper.BaseIntelligentAnswerDetailMapper;
 import com.rockapp.service.BaseIntelligentAnswerDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 

@@ -3,9 +3,6 @@ package com.rockapp.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rockapp.entity.BaseSyncLithologyKnowledgeEntity;
 
-
-import java.util.Map;
-
 /**
  * 岩性知识库表
  *

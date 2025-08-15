@@ -1,11 +1,8 @@
 package com.rockapp.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.lowagie.text.Element;
-import com.lowagie.text.Phrase;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfWriter;
 import com.rockapp.dto.BaseVersionHistoryUplodDto;
 import com.rockapp.entity.BaseVersionHistoryEntity;
 import com.rockapp.mapper.BaseVersionHistoryMapper;
@@ -17,27 +14,24 @@ import fr.opensagres.poi.xwpf.converter.pdf.PdfOptions;
 import fr.opensagres.xdocreport.itext.extension.font.IFontProvider;
 import io.minio.errors.*;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.poi.xwpf.usermodel.*;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
-
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import com.lowagie.text.Font;
 
 
 @Service("baseVersionHistoryService")

@@ -1,11 +1,9 @@
 package com.rockapp.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 @Schema(description = "岩性识别结果入参实体")

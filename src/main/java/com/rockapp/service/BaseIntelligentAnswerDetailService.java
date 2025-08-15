@@ -3,9 +3,6 @@ package com.rockapp.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rockapp.dto.SaveDetailDto;
 import com.rockapp.entity.BaseIntelligentAnswerDetailEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Map;
 
 /**
  * 多模态大模型对话消息表

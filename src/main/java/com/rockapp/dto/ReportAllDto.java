@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Schema(description = "岩性识别报告实体")

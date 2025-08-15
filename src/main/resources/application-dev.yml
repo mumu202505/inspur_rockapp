@@ -16,6 +16,10 @@ spring:
       port: 6379        # Redis服务器连接端口
       password:         # Redis服务器连接密码（默认为空）
   # application.yml
+  security:
+    user:
+      name: admin
+      password: admin123
 springdoc:
   swagger-ui:
     path: /swagger-ui.html   # Swagger UI 访问路径

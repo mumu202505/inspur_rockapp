@@ -1,6 +1,9 @@
 package com.rockapp.controller;
 
-import com.rockapp.dto.*;
+import com.rockapp.dto.BaseLithologyRecognitionResultDto;
+import com.rockapp.dto.MoveProjectResultDto;
+import com.rockapp.dto.RecognitonResultDto;
+import com.rockapp.dto.RemarkDto;
 import com.rockapp.service.BaseLithologyRecognitionResultService;
 import com.rockapp.utils.ResultUtil;
 import io.swagger.v3.oas.annotations.Operation;

@@ -6,7 +6,6 @@ import com.rockapp.dto.BasePromptQuestionDto;
 import com.rockapp.entity.BasePromptQuestionEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 
 /**
  * 多模态大模型对话提示问题表

@@ -2,7 +2,6 @@ package com.rockapp.utils;
 
 import cn.hutool.core.io.FastByteArrayOutputStream;
 import cn.hutool.core.lang.UUID;
-import com.rockapp.config.MinioConfig;
 import com.rockapp.core.exception.ServiceException;
 import com.rockapp.enums.result.SysResultEnum;
 import io.minio.*;
@@ -10,18 +9,15 @@ import io.minio.errors.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
-import io.minio.messages.Part;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

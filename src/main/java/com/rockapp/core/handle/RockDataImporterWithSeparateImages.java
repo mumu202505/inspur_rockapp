@@ -1,13 +1,11 @@
 package com.rockapp.core.handle;
 
 import com.rockapp.dto.RockData;
-import io.minio.*;
-import io.minio.errors.*;
-import org.apache.poi.xwpf.usermodel.*;
-import java.io.*;
+import io.minio.MinioClient;
+
 import java.sql.*;
-import java.util.*;
-import java.util.regex.*;
+import java.util.List;
+import java.util.UUID;
 
 public class RockDataImporterWithSeparateImages {
 

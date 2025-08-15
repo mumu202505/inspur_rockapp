@@ -1,13 +1,11 @@
 package com.rockapp.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 /**
  * 岩性识别报告表

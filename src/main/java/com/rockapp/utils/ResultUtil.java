@@ -5,7 +5,6 @@ import com.rockapp.enums.result.ResultStatusEnum;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Collections;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 @Data

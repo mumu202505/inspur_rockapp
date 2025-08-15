@@ -1,17 +1,9 @@
 package com.rockapp.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.net.HttpHeaders;
-import com.rockapp.core.constant.CommonConstant;
-import com.rockapp.core.exception.ServiceException;
 import com.rockapp.dto.AccountDto;
 import com.rockapp.dto.AccountLoginDto;
 import com.rockapp.dto.UpdatePasswordDto;
-import com.rockapp.entity.BaseUserProjectEntity;
-import com.rockapp.enums.result.SysResultEnum;
-import com.rockapp.mapper.BaseUserProjectMapper;
-import com.rockapp.service.BaseUserProjectService;
 import com.rockapp.service.BaseUserService;
 import com.rockapp.service.UniversalityService;
 import com.rockapp.utils.AesUtil;

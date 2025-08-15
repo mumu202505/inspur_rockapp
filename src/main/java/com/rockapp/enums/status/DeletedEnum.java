@@ -1,7 +1,6 @@
 package com.rockapp.enums.status;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import com.rockapp.enums.BaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

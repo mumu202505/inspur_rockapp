@@ -3,13 +3,11 @@ package com.rockapp.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rockapp.core.constant.TokenConstant;
 import com.rockapp.core.exception.ServiceException;
-import com.rockapp.dto.BaseUserDto;
 import com.rockapp.dto.CurrentlyLoggedInDto;
 import com.rockapp.enums.result.SysResultEnum;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
-
 
 import java.util.Date;
 import java.util.HashMap;

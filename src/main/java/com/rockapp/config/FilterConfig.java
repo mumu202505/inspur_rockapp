@@ -1,10 +1,10 @@
 package com.rockapp.config;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.rockapp.core.filter.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FilterConfig {

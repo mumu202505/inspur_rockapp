@@ -1,16 +1,10 @@
 package com.rockapp.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rockapp.core.constant.TokenConstant;
 import com.rockapp.entity.BaseUserEntity;
-import com.rockapp.service.RedisService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collection;

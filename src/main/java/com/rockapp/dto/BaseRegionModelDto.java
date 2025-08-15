@@ -1,12 +1,9 @@
 package com.rockapp.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @Schema(description = "查询模型返回数据")

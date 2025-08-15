@@ -3,8 +3,6 @@ package com.rockapp.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rockapp.entity.BaseTaskDescribeEntity;
 
-import java.util.Map;
-
 /**
  * 任务描述表
  *

@@ -1,12 +1,19 @@
 package com.rockapp.core.handle;
 
-import io.minio.*;
-import io.minio.errors.*;
-import org.apache.poi.xwpf.usermodel.*;
-import java.io.*;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFPictureData;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.sql.*;
 import java.util.*;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RockDataImporter {
 

@@ -6,9 +6,6 @@ import com.rockapp.dto.BasePromptQuestionDto;
 import com.rockapp.entity.BasePromptQuestionEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * 多模态大模型对话提示问题表
  *

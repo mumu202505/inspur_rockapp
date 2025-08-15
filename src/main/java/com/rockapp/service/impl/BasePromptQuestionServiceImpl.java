@@ -1,20 +1,17 @@
 package com.rockapp.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rockapp.core.exception.ServiceException;
 import com.rockapp.dto.BasePromptQuestionDto;
 import com.rockapp.entity.BasePromptQuestionEntity;
-import com.rockapp.entity.BaseRegionModelEntity;
-import com.rockapp.enums.result.RedisResultEnum;
 import com.rockapp.enums.result.SysResultEnum;
 import com.rockapp.mapper.BasePromptQuestionMapper;
 import com.rockapp.service.BasePromptQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 

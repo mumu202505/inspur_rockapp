@@ -1,6 +1,5 @@
 package com.rockapp.mapper;
 
-import com.rockapp.dto.DistrictNode;
 import com.rockapp.dto.SysDistrictGd;
 import org.apache.ibatis.annotations.Mapper;
 

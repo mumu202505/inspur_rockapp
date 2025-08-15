@@ -1,8 +1,6 @@
 package com.rockapp.vo;
 
-import com.rockapp.dto.BaseUserDto;
 import com.rockapp.dto.CurrentlyLoggedInDto;
-import com.rockapp.entity.BaseUserEntity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

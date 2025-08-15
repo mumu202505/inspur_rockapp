@@ -2,12 +2,9 @@ package com.rockapp.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rockapp.dto.BaseRegionModelDto;
-import com.rockapp.dto.GetBaseRegionModelDto;
 import com.rockapp.entity.BaseRegionModelEntity;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 模型信息表

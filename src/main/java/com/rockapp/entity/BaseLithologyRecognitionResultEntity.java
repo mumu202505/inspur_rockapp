@@ -1,14 +1,12 @@
 package com.rockapp.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.math.BigDecimal;
-import java.io.Serializable;
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 岩性识别结果表

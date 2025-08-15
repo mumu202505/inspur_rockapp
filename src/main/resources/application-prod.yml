@@ -18,6 +18,10 @@ spring:
       username: default
       password: yxsb@2025         # Redis服务器连接密码（默认为空）
   # application.yml
+  security:
+    user:
+      name: admin
+      password: admin123
 springdoc:
   swagger-ui:
     path: /swagger-ui.html   # Swagger UI 访问路径
