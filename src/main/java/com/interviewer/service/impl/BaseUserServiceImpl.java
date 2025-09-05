@@ -18,14 +18,17 @@ import com.interviewer.vo.TokenVO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
+
+import static cn.hutool.extra.servlet.ServletUtil.METHOD_POST;
 
 
 @Service("baseUserService")
@@ -198,6 +201,37 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
             redisService.del(TokenConstant.LOGIN_USER_REDIS_KEY + "_" + UserUtil.getUser().getId());
             //删除redis中手机验证码
             redisService.del(TokenConstant.PHONE_CODE + "_" + updatePasswordDto.getFPhone());
+        }
+    }
+
+    @Override
+    public void senTextMessage(String phoen) {
+        String host = "https://dfsns.market.alicloudapi.com";
+        String path = "/data/send_sms";
+        String appcode = "5a8ff0966ab54ac49f781d8674a034b0";
+        Map<String, String> headers = new HashMap<String, String>();
+        //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
+        headers.put("Authorization", "APPCODE " + appcode);
+        //根据API的要求，定义相对应的Content-Type
+        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        Map<String, String> querys = new HashMap<String, String>();
+        Map<String, String> bodys = new HashMap<String, String>();
+        //生成五位随机数
+        Random random = new Random();
+        int verificationCode = random.nextInt(90000) + 10000;
+        bodys.put("content", "code:" + verificationCode);
+        bodys.put("template_id", "CST_bajfjqgklhkb11374");
+        bodys.put("phone_number", phoen);
+        //验证码放入redis
+        redisService.set(TokenConstant.PHONE_CODE + "_" + phoen, verificationCode, TokenConstant.CODE_EXPIRES_IN);
+        try {
+            HttpResponse response = HttpUtils.doPost(host, path, METHOD_POST, headers, querys, bodys);
+            HttpEntity entity = response.getEntity();
+            String result = EntityUtils.toString(entity, "UTF-8");
+            log.info("发送短信验证码结果：" + result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ServiceException(SysResultEnum.GET_TEXT_ERROR);
         }
     }
 

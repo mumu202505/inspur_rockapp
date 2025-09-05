@@ -64,5 +64,11 @@ public interface BaseUserService extends IService<BaseUserEntity> {
      */
     void getBackPsd(UpdatePasswordDto updatePasswordDto);
 
+    /**
+     * 发送短信
+     * @param phone
+     */
+    void senTextMessage(String phone);
+
 }
 

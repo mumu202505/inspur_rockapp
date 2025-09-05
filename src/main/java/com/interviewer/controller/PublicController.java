@@ -70,13 +70,13 @@ public class PublicController {
         return ResultUtil.SUCCESS_NO_DATA;
     }
 
-//    @GetMapping("/senTextMessage")
-//    @ResponseBody
-//    @Operation(summary = "发送短信")
-//    public ResultUtil senTextMessage(@RequestParam("phone")String phone) {
-//        universalityService.senTextMessage(phone);
-//        return ResultUtil.success("验证码已发送!");
-//    }
+    @GetMapping("/senTextMessage")
+    @ResponseBody
+    @Operation(summary = "发送短信")
+    public ResultUtil senTextMessage(@RequestParam("phone")String phone) {
+        baseUserService.senTextMessage(phone);
+        return ResultUtil.success("验证码已发送!");
+    }
 
 
     @Resource
