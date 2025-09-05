@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.interviewer.core.constant.TokenConstant;
 import com.interviewer.core.exception.ServiceException;
 import com.interviewer.dto.*;
+import com.interviewer.dto.param.AccountLoginParam;
 import com.interviewer.dto.param.SignInParam;
+import com.interviewer.dto.param.UpdatePasswordParam;
 import com.interviewer.entity.BaseUserEntity;
 import com.interviewer.enums.result.ResultStatusEnum;
 import com.interviewer.enums.result.SysResultEnum;
@@ -130,7 +132,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     }
 
     @Override
-    public TokenVO login(AccountLoginDto account, HttpServletRequest httpServletRequest) {
+    public TokenVO login(AccountLoginParam account, HttpServletRequest httpServletRequest) {
         log.info("===============进入后端管理认证 用户名和密码的登录方式============");
         log.info("##account={}", account);
         //密码密文解密
@@ -171,22 +173,22 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     }
 
     @Override
-    public void getBackPsd(UpdatePasswordDto updatePasswordDto) {
+    public void getBackPsd(UpdatePasswordParam updatePasswordParam) {
         log.info("===============进入找回密码方式============");
         // TODO 添加验证码方式
-        String code = String.valueOf(redisService.get(TokenConstant.PHONE_CODE + "_" + updatePasswordDto.getPhone()));
+        String code = String.valueOf(redisService.get(TokenConstant.PHONE_CODE + "_" + updatePasswordParam.getPhone()));
         if (code == null) {
             //验证码过期
             throw new ServiceException(SysResultEnum.INVALID_CAPTCHA);
         }
-        if (!code.equals(updatePasswordDto.getCode())) {
+        if (!code.equals(updatePasswordParam.getCode())) {
             //验证码不通过
             throw new ServiceException(SysResultEnum.ERROR_CAPTCHA);
         }
 
         //验证码通过，修改密码
         //密码密文解密
-        String password = AesUtil.decrypt(updatePasswordDto.getPassword());
+        String password = AesUtil.decrypt(updatePasswordParam.getPassword());
         //随机生成盐值
         String salt = PasswordUtil.generateSalt();
         //密码加密
@@ -194,13 +196,13 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
         baseUserMapper.update(Wrappers.<BaseUserEntity>lambdaUpdate()
                 .set(BaseUserEntity::getPassword, map.get("password"))
                 .set(BaseUserEntity::getSalt, map.get("salt"))
-                .eq(BaseUserEntity::getPhone, updatePasswordDto.getPhone()));
+                .eq(BaseUserEntity::getPhone, updatePasswordParam.getPhone()));
         //删除redis中用户token和用户信息（登录之后）
         if (ObjectUtils.isNotEmpty(UserUtil.getUser())) {
             redisService.del(TokenConstant.ACCESS_TOKEN + "_" + UserUtil.getUser().getId());
             redisService.del(TokenConstant.LOGIN_USER_REDIS_KEY + "_" + UserUtil.getUser().getId());
             //删除redis中手机验证码
-            redisService.del(TokenConstant.PHONE_CODE + "_" + updatePasswordDto.getPhone());
+            redisService.del(TokenConstant.PHONE_CODE + "_" + updatePasswordParam.getPhone());
         }
     }
 

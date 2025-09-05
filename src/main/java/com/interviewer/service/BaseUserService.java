@@ -2,7 +2,9 @@ package com.interviewer.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.interviewer.dto.*;
+import com.interviewer.dto.param.AccountLoginParam;
 import com.interviewer.dto.param.SignInParam;
+import com.interviewer.dto.param.UpdatePasswordParam;
 import com.interviewer.entity.BaseUserEntity;
 import com.interviewer.vo.TokenVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,7 +52,7 @@ public interface BaseUserService extends IService<BaseUserEntity> {
      * @param account
      * @return
      */
-    TokenVO login(AccountLoginDto account, HttpServletRequest httpServletRequest);
+    TokenVO login(AccountLoginParam account, HttpServletRequest httpServletRequest);
 
     /**
      * 用户注册
@@ -60,9 +62,9 @@ public interface BaseUserService extends IService<BaseUserEntity> {
 
     /**
      * 根据手机验证码修改密码
-     * @param updatePasswordDto
+     * @param updatePasswordParam
      */
-    void getBackPsd(UpdatePasswordDto updatePasswordDto);
+    void getBackPsd(UpdatePasswordParam updatePasswordParam);
 
     /**
      * 发送短信

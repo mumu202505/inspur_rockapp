@@ -1,4 +1,4 @@
-package com.interviewer.dto;
+package com.interviewer.dto.param;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "修改密码入参实体")
-public class UpdatePasswordDto {
+public class UpdatePasswordParam {
     /**
      * 用户手机号
      */
