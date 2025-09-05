@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.rock</groupId>
-    <artifactId>inspur-rockapp</artifactId>
+    <artifactId>rockapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>springboot-security</name>
     <description>springboot-security</description>

@@ -3,18 +3,18 @@ server:
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+    url: jdbc:mysql://192.168.188.61:3306/interviewer?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
     username: root
-    password: root
+    password: root@3306
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   data:
     redis:
       database: 2       # Redis数据库索引（默认为0）
-      host: localhost    # Redis服务器地址
+      host: 192.168.188.61    # Redis服务器地址
       port: 6379        # Redis服务器连接端口
-      password:         # Redis服务器连接密码（默认为空）
+      password: redis@123        # Redis服务器连接密码（默认为空）
   # application.yml
 springdoc:
   swagger-ui:
@@ -30,11 +30,11 @@ security:
 
 yxsb:
   # 请求地址
-  url: http://192.168.188.210:8017/yx_json/
+  url: http://192.168.188.61:9001/interviewer/
 minio:
-  url: http://111.34.65.134:3634
-  endpoint: http://localhost:9005
-  bucketName: mytest
+  url: http://192.168.188.61:3634
+  endpoint: http://192.168.188.61:9000
+  bucketName: interviewer
   accessKey: t5zXw9o20K6iDKFou8ZA
   secretKey: EtJ8PjKtswdSQmHr6epa7eG7ieN7ctAUo0PlHCdx
 # mybatis-plus相关配置
