@@ -53,12 +53,6 @@ public interface BaseUserService extends IService<BaseUserEntity> {
     TokenVO login(AccountLoginDto account, HttpServletRequest httpServletRequest);
 
     /**
-     * 用户登出
-     * @return
-     */
-    void logout();
-
-    /**
      * 用户注册
      * @param signInParam
      */

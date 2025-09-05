@@ -158,17 +158,6 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     }
 
     @Override
-    public void logout() {
-        // 清除redis中的token和用户信息
-        if (redisService.hasKey(TokenConstant.ACCESS_TOKEN + "_" + UserUtil.getUser().getId())) {
-            redisService.del(TokenConstant.ACCESS_TOKEN + "_" + UserUtil.getUser().getId());
-            redisService.del(TokenConstant.LOGIN_USER_REDIS_KEY + "_" + UserUtil.getUser().getId());
-        } else {
-            throw new ServiceException(SysResultEnum.APP_USER_TIMEOUT);
-        }
-    }
-
-    @Override
     public void sign(SignInParam signInParam) {
         log.info("===============进入用户注册方式============,{}", signInParam);
         //密码密文解密
