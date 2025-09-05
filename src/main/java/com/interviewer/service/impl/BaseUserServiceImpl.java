@@ -174,7 +174,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     public void getBackPsd(UpdatePasswordDto updatePasswordDto) {
         log.info("===============进入找回密码方式============");
         // TODO 添加验证码方式
-        String code = String.valueOf(redisService.get(TokenConstant.PHONE_CODE + "_" + updatePasswordDto.getFPhone()));
+        String code = String.valueOf(redisService.get(TokenConstant.PHONE_CODE + "_" + updatePasswordDto.getPhone()));
         if (code == null) {
             //验证码过期
             throw new ServiceException(SysResultEnum.INVALID_CAPTCHA);
@@ -186,7 +186,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
 
         //验证码通过，修改密码
         //密码密文解密
-        String password = AesUtil.decrypt(updatePasswordDto.getFPassword());
+        String password = AesUtil.decrypt(updatePasswordDto.getPassword());
         //随机生成盐值
         String salt = PasswordUtil.generateSalt();
         //密码加密
@@ -194,13 +194,13 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
         baseUserMapper.update(Wrappers.<BaseUserEntity>lambdaUpdate()
                 .set(BaseUserEntity::getPassword, map.get("password"))
                 .set(BaseUserEntity::getSalt, map.get("salt"))
-                .eq(BaseUserEntity::getPhone, updatePasswordDto.getFPhone()));
+                .eq(BaseUserEntity::getPhone, updatePasswordDto.getPhone()));
         //删除redis中用户token和用户信息（登录之后）
         if (ObjectUtils.isNotEmpty(UserUtil.getUser())) {
             redisService.del(TokenConstant.ACCESS_TOKEN + "_" + UserUtil.getUser().getId());
             redisService.del(TokenConstant.LOGIN_USER_REDIS_KEY + "_" + UserUtil.getUser().getId());
             //删除redis中手机验证码
-            redisService.del(TokenConstant.PHONE_CODE + "_" + updatePasswordDto.getFPhone());
+            redisService.del(TokenConstant.PHONE_CODE + "_" + updatePasswordDto.getPhone());
         }
     }
 

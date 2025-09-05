@@ -13,12 +13,12 @@ public class UpdatePasswordDto {
      * 用户手机号
      */
     @Schema(description = "用户手机号")
-    private String fPhone;
+    private String phone;
     /**
      * 密码
      */
     @Schema(description = "密码")
-    private String fPassword;
+    private String password;
     /**
      * 验证码
      */
