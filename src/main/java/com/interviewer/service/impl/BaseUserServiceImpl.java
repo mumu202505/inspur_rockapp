@@ -10,6 +10,7 @@ import com.interviewer.dto.*;
 import com.interviewer.dto.param.AccountLoginParam;
 import com.interviewer.dto.param.SignInParam;
 import com.interviewer.dto.param.UpdatePasswordParam;
+import com.interviewer.dto.param.UserPassWordParam;
 import com.interviewer.entity.BaseUserEntity;
 import com.interviewer.enums.result.ResultStatusEnum;
 import com.interviewer.enums.result.SysResultEnum;
@@ -62,14 +63,14 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
 
 
     @Override
-    public void updatepsd(BaseUserPassWordDto baseUserPassWordDto) {
+    public void updatepsd(UserPassWordParam userPassWordParam) {
         log.info("===============进入根据原密码修改密码方式============");
         //验证原密码
         //1.密码密文解密
-        CurrentlyLoggedInDto baseUserDto = baseUserLogin(UserUtil.getUser().getUserName(), AesUtil.decrypt(baseUserPassWordDto.getFOldPassWord()),null);
+        CurrentlyLoggedInDto baseUserDto = baseUserLogin(UserUtil.getUser().getUserName(), AesUtil.decrypt(userPassWordParam.getOldPassWord()),null);
         if (ObjectUtils.isNotEmpty(baseUserDto)) {
             //2.密码加密
-            String password = AesUtil.decrypt(baseUserPassWordDto.getFPassWord());
+            String password = AesUtil.decrypt(userPassWordParam.getPassWord());
             Map<String, String> map = encryptPassword(password);
             //3.修改密码
             baseUserMapper.update(null,

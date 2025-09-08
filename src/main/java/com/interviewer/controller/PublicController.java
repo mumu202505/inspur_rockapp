@@ -3,6 +3,7 @@ package com.interviewer.controller;
 import com.interviewer.dto.param.AccountLoginParam;
 import com.interviewer.dto.param.SignInParam;
 import com.interviewer.dto.param.UpdatePasswordParam;
+import com.interviewer.dto.param.UserPassWordParam;
 import com.interviewer.service.BaseUserService;
 import com.interviewer.utils.ResultUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,14 @@ public class PublicController {
     public ResultUtil getBackPsd(
             @RequestBody UpdatePasswordParam updatePasswordParam) {
         baseUserService.getBackPsd(updatePasswordParam);
+        return ResultUtil.SUCCESS_NO_DATA;
+    }
+
+    @PostMapping("/updatePassWord")
+    @ResponseBody
+    @Operation(summary = "根据原密码修改密码")
+    public ResultUtil updatePassWord(@RequestBody UserPassWordParam userPassWordParam) {
+        baseUserService.updatepsd(userPassWordParam);
         return ResultUtil.SUCCESS_NO_DATA;
     }
 

@@ -5,6 +5,7 @@ import com.interviewer.dto.*;
 import com.interviewer.dto.param.AccountLoginParam;
 import com.interviewer.dto.param.SignInParam;
 import com.interviewer.dto.param.UpdatePasswordParam;
+import com.interviewer.dto.param.UserPassWordParam;
 import com.interviewer.entity.BaseUserEntity;
 import com.interviewer.vo.TokenVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,10 +25,10 @@ public interface BaseUserService extends IService<BaseUserEntity> {
 
     /**
      * 修改密码
-     * @param baseUserPassWordDto
+     * @param userPassWordParam
      * @return
      */
-    void updatepsd(BaseUserPassWordDto baseUserPassWordDto);
+    void updatepsd(UserPassWordParam userPassWordParam);
 
     /**
      * 获取当前登录用户信息
