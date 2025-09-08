@@ -32,11 +32,11 @@ yxsb:
   # 请求地址
   url: http://192.168.188.61:9001/interviewer/
 minio:
-  url: http://192.168.188.61:3634
+  url: http://192.168.188.61:9000
   endpoint: http://192.168.188.61:9000
   bucketName: interviewer
-  accessKey: t5zXw9o20K6iDKFou8ZA
-  secretKey: EtJ8PjKtswdSQmHr6epa7eG7ieN7ctAUo0PlHCdx
+  accessKey: CG5HI5JWXWMSBRQX14VD
+  secretKey: +PH97bygqZdzXCSAfRJbGamLpJHcHerFwV1L3jl1
 # mybatis-plus相关配置
 mybatis-plus:
   # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）

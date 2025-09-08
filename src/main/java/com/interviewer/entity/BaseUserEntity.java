@@ -169,14 +169,17 @@ public class BaseUserEntity implements Serializable {
 	/**
 	 * 时间
 	 */
+	@TableField(exist = false)
 	@Schema(description = "时间")
 	private Date loginTime;
 	/**
 	 * ip
 	 */
+	@TableField(exist = false)
 	@Schema(description = "ip地址")
 	private String loginIp;
 
+	@TableField(exist = false)
 	private Long exp;
 
 }

@@ -1,22 +1,20 @@
 server:
-  port: 8081
-
+  port: 8001
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.31.128.115:3306/rockapp?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+    url: jdbc:mysql://192.168.188.61:3306/interviewer?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
     username: root
-    password: yxsb@2025
+    password: root@3306
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   data:
     redis:
-      database: 1       # Redis数据库索引（默认为0） 1为用户信息/验证码等信息  0为分片上传数据
-      host: 172.31.128.115    # Redis服务器地址
+      database: 2       # Redis数据库索引（默认为0）
+      host: 192.168.188.61    # Redis服务器地址
       port: 6379        # Redis服务器连接端口
-      username: default
-      password: yxsb@2025         # Redis服务器连接密码（默认为空）
+      password: redis@123        # Redis服务器连接密码（默认为空）
   # application.yml
 springdoc:
   swagger-ui:
@@ -25,24 +23,20 @@ springdoc:
   api-docs:
     path: /v3/api-docs       # OpenAPI JSON 文档路径
   default-produces-media-type: application/json
-
-  # application.yml
+# application.yml
 security:
   headers:
     content-security-policy: "default-src 'self'; script-src 'self' https://trusted.cdn.example.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; form-action 'self'"
 
 yxsb:
   # 请求地址
-  url: http://192.168.188.210:8017/yx_json/
-redisInfo:
- host: 172.31.128.115
- port: 6379
+  url: http://192.168.188.61:9001/interviewer/
 minio:
-  url: http://202.102.182.91:9000
-  endpoint: http://172.31.128.115:9000
-  bucketName: rock-images
-  accessKey: ee6FP68W7fpHiuRQopcu
-  secretKey: MktqWnKyiQdMeUWccc6BZnXzltBfUj48nlbX85nU
+  url: http://192.168.188.61:9000
+  endpoint: http://192.168.188.61:9000
+  bucketName: interviewer
+  accessKey: CG5HI5JWXWMSBRQX14VD
+  secretKey: +PH97bygqZdzXCSAfRJbGamLpJHcHerFwV1L3jl1
 # mybatis-plus相关配置
 mybatis-plus:
   # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
@@ -56,6 +50,9 @@ mybatis-plus:
       id-type: AUTO
       #字段策略 IGNORED:"忽略判断"  NOT_NULL:"非 NULL 判断")  NOT_EMPTY:"非空判断"
       field-strategy: NOT_EMPTY
+      logic-delete-field: fIsDelete  # 实体类中的字段名
+      logic-not-delete-value: 0     # 未删除的值
+      logic-delete-value: 1         # 已删除的值
       #数据库类型
       db-type: MYSQL
   configuration:
