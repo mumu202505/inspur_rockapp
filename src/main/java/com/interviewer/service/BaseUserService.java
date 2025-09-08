@@ -1,7 +1,8 @@
 package com.interviewer.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.interviewer.dto.*;
+import com.interviewer.dto.CurrentlyLoggedInDto;
+import com.interviewer.dto.UpdatePhoneDto;
 import com.interviewer.dto.param.*;
 import com.interviewer.entity.BaseUserEntity;
 import com.interviewer.vo.TokenVO;

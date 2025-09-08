@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rockapp.entity.GaoDeDistrict;
 import com.rockapp.mapper.GaoDeDistrictMapper;
 import com.rockapp.service.GaoDeDistrictService;
+import com.rockapp.utils.HttpRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.rockapp.utils.HttpRequestUtil;
 
 import java.util.Date;
 import java.util.HashMap;

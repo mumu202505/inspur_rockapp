@@ -6,10 +6,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.interviewer.core.constant.TokenConstant;
 import com.interviewer.core.exception.ServiceException;
-import com.interviewer.dto.*;
+import com.interviewer.dto.CurrentlyLoggedInDto;
+import com.interviewer.dto.UpdatePhoneDto;
 import com.interviewer.dto.param.*;
 import com.interviewer.entity.BaseUserEntity;
-import com.interviewer.enums.result.ResultStatusEnum;
 import com.interviewer.enums.result.SysResultEnum;
 import com.interviewer.mapper.BaseUserMapper;
 import com.interviewer.service.BaseUserService;
@@ -26,7 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import static cn.hutool.extra.servlet.ServletUtil.METHOD_POST;

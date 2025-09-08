@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.interviewer.mapper.UniversalityMapper">
+
+    <select id="getbuildTree" resultType="com.interviewer.dto.SysDistrictGd">
+        SELECT id, ad_code, name, level, city_code, parent_code, parent_name,
+               full_name, longitude, latitude
+        FROM base_district
+--         ORDER BY level, id;
+        ORDER BY ad_code;
+    </select>
+</mapper>

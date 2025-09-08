@@ -1,29 +1,16 @@
 package com.interviewer.controller;
 
-import com.interviewer.core.exception.ServiceException;
-import com.interviewer.dto.*;
+import com.interviewer.dto.UpdatePhoneDto;
 import com.interviewer.dto.param.BaseUserParam;
-import com.interviewer.enums.result.SysResultEnum;
 import com.interviewer.service.BaseUserService;
 import com.interviewer.service.RedisService;
-import com.interviewer.utils.CommonBeanUtils;
-import com.interviewer.utils.JwtUtils;
 import com.interviewer.utils.ResultUtil;
-import com.interviewer.utils.UserUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * 令牌环自动更新

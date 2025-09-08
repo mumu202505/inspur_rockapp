@@ -1,34 +1,22 @@
 package com.interviewer.service.impl;
 
-import com.interviewer.core.constant.TokenConstant;
-import com.interviewer.core.exception.ServiceException;
 import com.interviewer.dto.DistrictNode;
 import com.interviewer.dto.SysDistrictGd;
-import com.interviewer.enums.result.SysResultEnum;
 import com.interviewer.mapper.UniversalityMapper;
 import com.interviewer.service.RedisService;
 import com.interviewer.service.UniversalityService;
-import com.interviewer.utils.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.springframework.web.servlet.support.WebContentGenerator.METHOD_POST;
 
 @Service
 @Slf4j
 @Transactional
 public class UniversalityServiceImpl implements UniversalityService {
-    private static final String CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
     @Autowired
     UniversalityMapper universalityMapper;
 
