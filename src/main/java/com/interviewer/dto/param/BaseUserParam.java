@@ -1,16 +1,14 @@
-package com.interviewer.dto;
+package com.interviewer.dto.param;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Schema(description = "修改用户信息入参")
-public class BaseUserDto {
+public class BaseUserParam implements Serializable {
 
     /**
      * 用户ID

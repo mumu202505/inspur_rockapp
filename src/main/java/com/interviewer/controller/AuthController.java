@@ -2,6 +2,7 @@ package com.interviewer.controller;
 
 import com.interviewer.core.exception.ServiceException;
 import com.interviewer.dto.*;
+import com.interviewer.dto.param.BaseUserParam;
 import com.interviewer.enums.result.SysResultEnum;
 import com.interviewer.service.BaseUserService;
 import com.interviewer.service.RedisService;
@@ -43,7 +44,7 @@ public class AuthController {
     @PostMapping("/logout")
     @Operation(summary = "退出/注销用户")
     public ResultUtil logout() {
-//        baseUserService.logout();
+        baseUserService.logout();
         return ResultUtil.SUCCESS_NO_DATA;
     }
 
@@ -58,8 +59,8 @@ public class AuthController {
     @PostMapping("/updateUser")
     @ResponseBody
     @Operation(summary = "修改用户基本信息")
-    public ResultUtil updateUser(@RequestBody BaseUserDto baseUserDto) {
-        baseUserService.updateUser(baseUserDto);
+    public ResultUtil updateUser(@RequestBody BaseUserParam baseUserParam) {
+        baseUserService.updateUser(baseUserParam);
         return ResultUtil.SUCCESS_NO_DATA;
     }
 

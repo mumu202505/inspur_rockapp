@@ -7,10 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.interviewer.core.constant.TokenConstant;
 import com.interviewer.core.exception.ServiceException;
 import com.interviewer.dto.*;
-import com.interviewer.dto.param.AccountLoginParam;
-import com.interviewer.dto.param.SignInParam;
-import com.interviewer.dto.param.UpdatePasswordParam;
-import com.interviewer.dto.param.UserPassWordParam;
+import com.interviewer.dto.param.*;
 import com.interviewer.entity.BaseUserEntity;
 import com.interviewer.enums.result.ResultStatusEnum;
 import com.interviewer.enums.result.SysResultEnum;
@@ -91,10 +88,10 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     }
 
     @Override
-    public void updateUser(BaseUserDto baseUserDto) {
+    public void updateUser(BaseUserParam baseUserParam) {
         log.info("===============进入修改用户信息方式============");
         //修改用户信息
-        BaseUserEntity baseUser = CommonBeanUtils.dtoTransfer(baseUserDto, BaseUserEntity.class);
+        BaseUserEntity baseUser = CommonBeanUtils.dtoTransfer(baseUserParam, BaseUserEntity.class);
         baseUserMapper.updateById(baseUser);
         BaseUserEntity user = baseUserMapper.selectOne(Wrappers.<BaseUserEntity>lambdaQuery()
                 .eq(BaseUserEntity::getId, UserUtil.getUser().getId()));
@@ -169,6 +166,17 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
         tokenVO.setAccess_token(accessToken).setExpires_in(TokenConstant.EXPIRES_IN).setUser_info(baseUser);
 
         return tokenVO;
+    }
+
+    @Override
+    public void logout() {
+        // 清除redis中的token和用户信息
+        if (redisService.hasKey(TokenConstant.ACCESS_TOKEN + "_" + UserUtil.getUser().getId())) {
+            redisService.del(TokenConstant.ACCESS_TOKEN + "_" + UserUtil.getUser().getId());
+            redisService.del(TokenConstant.LOGIN_USER_REDIS_KEY + "_" + UserUtil.getUser().getId());
+        } else {
+            throw new ServiceException(SysResultEnum.APP_USER_TIMEOUT);
+        }
     }
 
     @Override

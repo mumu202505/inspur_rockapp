@@ -58,8 +58,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (isProtectedUrl(httpServletRequest)) {
 
                 Map<String, Object> claims = JwtUtils.validateTokenAndGetClaims(httpServletRequest);
-                String role = String.valueOf(claims.get("frole"));
-                String userid = String.valueOf(claims.get("fid"));
+                String role = String.valueOf(claims.get("role"));
+                String userid = String.valueOf(claims.get("id"));
                 String remoteAddr = httpServletRequest.getRemoteAddr();
                 String loginIp = String.valueOf(claims.get("loginIp"));
                 if (!remoteAddr.equals(loginIp)) {

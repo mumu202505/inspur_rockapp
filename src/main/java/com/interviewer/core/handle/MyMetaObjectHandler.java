@@ -44,7 +44,12 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         this.setFieldValByName("lastModifyUserName", Optional.ofNullable(UserUtil.getUser().getUserName()).orElse("1"), metaObject);
     }
 
-
+    public static void main(String[] args) {
+        String km1IIxJo6noJ2c6V = AesUtil.encrypt("Test123.AAA", "km1IIxJo6noJ2c6V");
+        System.out.println(km1IIxJo6noJ2c6V);
+//        String km1IIxJo6noJ2c6V1 = AesUtil.decrypt(km1IIxJo6noJ2c6V);
+//        System.out.println(km1IIxJo6noJ2c6V1);
+    }
 
 }
 

@@ -2,10 +2,7 @@ package com.interviewer.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.interviewer.dto.*;
-import com.interviewer.dto.param.AccountLoginParam;
-import com.interviewer.dto.param.SignInParam;
-import com.interviewer.dto.param.UpdatePasswordParam;
-import com.interviewer.dto.param.UserPassWordParam;
+import com.interviewer.dto.param.*;
 import com.interviewer.entity.BaseUserEntity;
 import com.interviewer.vo.TokenVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,9 +35,9 @@ public interface BaseUserService extends IService<BaseUserEntity> {
 
     /**
      * 修改用户信息
-     * @param baseUserDto
+     * @param baseUserParam
      */
-    void updateUser(BaseUserDto baseUserDto);
+    void updateUser(BaseUserParam baseUserParam);
 
     /**
      * 绑定手机号
@@ -54,6 +51,13 @@ public interface BaseUserService extends IService<BaseUserEntity> {
      * @return
      */
     TokenVO login(AccountLoginParam account, HttpServletRequest httpServletRequest);
+
+
+    /**
+     * 用户登出
+     * @return
+     */
+    void logout();
 
     /**
      * 用户注册
