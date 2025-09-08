@@ -1,6 +1,7 @@
 package com.interviewer.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.interviewer.core.constant.TokenConstant;
@@ -65,7 +66,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
         log.info("===============进入根据原密码修改密码方式============");
         //验证原密码
         //1.密码密文解密
-        CurrentlyLoggedInDto baseUserDto = baseUserLogin(UserUtil.getUser().getUserName(), AesUtil.decrypt(baseUserPassWordDto.getFOldPassWord()));
+        CurrentlyLoggedInDto baseUserDto = baseUserLogin(UserUtil.getUser().getUserName(), AesUtil.decrypt(baseUserPassWordDto.getFOldPassWord()),null);
         if (ObjectUtils.isNotEmpty(baseUserDto)) {
             //2.密码加密
             String password = AesUtil.decrypt(baseUserPassWordDto.getFPassWord());
@@ -135,12 +136,18 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     public TokenVO login(AccountLoginParam account, HttpServletRequest httpServletRequest) {
         log.info("===============进入后端管理认证 用户名和密码的登录方式============");
         log.info("##account={}", account);
-        //密码密文解密
-        String password = AesUtil.decrypt(account.password);
+        String password = "";
         CurrentlyLoggedInDto baseUser = null;
+        //手机号验证码登录：验证手机验证码是否正确
+        if (StringUtils.isNotEmpty(account.code)){
+            sendSms(account.userName, account.code);
+        } else {
+            //密码登录：密码密文解密
+            password = AesUtil.decrypt(account.password);
+        }
         try {
             //验证密码是否正确
-            baseUser = baseUserLogin(account.userName, password);
+            baseUser = baseUserLogin(account.userName, password, account.code);
             if (ObjectUtils.isNull(baseUser)) {
                 throw new ServiceException(SysResultEnum.USER_NAME_PASSWORD_ERROR);
             }
@@ -159,12 +166,15 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
         // 把完整的用户信息存入redis
         redisService.set(TokenConstant.LOGIN_USER_REDIS_KEY + "_" + baseUser.getId(), baseUser, TokenConstant.EXPIRES_IN);
         tokenVO.setAccess_token(accessToken).setExpires_in(TokenConstant.EXPIRES_IN).setUser_info(baseUser);
+
         return tokenVO;
     }
 
     @Override
     public void sign(SignInParam signInParam) {
         log.info("===============进入用户注册方式============,{}", signInParam);
+        //判断手机验证码是否正确
+        sendSms(signInParam.getPhone(), signInParam.getCode());
         //密码密文解密
         signInParam.setPassword(AesUtil.decrypt(signInParam.getPassword()));
         //插入用户
@@ -176,16 +186,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
     public void getBackPsd(UpdatePasswordParam updatePasswordParam) {
         log.info("===============进入找回密码方式============");
         // TODO 添加验证码方式
-        String code = String.valueOf(redisService.get(TokenConstant.PHONE_CODE + "_" + updatePasswordParam.getPhone()));
-        if (code == null) {
-            //验证码过期
-            throw new ServiceException(SysResultEnum.INVALID_CAPTCHA);
-        }
-        if (!code.equals(updatePasswordParam.getCode())) {
-            //验证码不通过
-            throw new ServiceException(SysResultEnum.ERROR_CAPTCHA);
-        }
-
+        sendSms(updatePasswordParam.getPhone(), updatePasswordParam.getCode());
         //验证码通过，修改密码
         //密码密文解密
         String password = AesUtil.decrypt(updatePasswordParam.getPassword());
@@ -294,24 +295,41 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUserEnt
      * @param password
      * @return
      */
-    CurrentlyLoggedInDto baseUserLogin(String userName, String password) {
+    CurrentlyLoggedInDto baseUserLogin(String userName, String password, String code) {
         //获取数据中用户信息
         BaseUserEntity baseUser = baseUserMapper.selectOne(Wrappers.<BaseUserEntity>query().lambda()
                 .and(wrapper -> wrapper
-                        .eq(BaseUserEntity::getUserName, userName)
-                        .or()
                         .eq(BaseUserEntity::getPhone, userName)
                         .or()
                         .eq(BaseUserEntity::getStudentNumber, userName)
                 )
         );
         CurrentlyLoggedInDto baseUserDto = CommonBeanUtils.dtoTransfer(baseUser, CurrentlyLoggedInDto.class);
-        //验证密码是否正确
-        boolean b = PasswordUtil.verifyPassword(password, baseUser.getSalt(), baseUser.getPassword());
-        if (b) {
+        //密码登录：验证密码是否正确
+        if (code == null) {
+            boolean b = PasswordUtil.verifyPassword(password, baseUser.getSalt(), baseUser.getPassword());
+            if (b) {
+                return baseUserDto;
+            } else {
+                throw new ServiceException(SysResultEnum.USER_PASSWORD_ERROR);
+            }
+        } else {
+            //验证码登录：直接返回用户信息
             return baseUserDto;
         }
-        return null;
+    }
+
+    //验证手机验证码
+    public void sendSms(String phoen, String phoneCode) {
+        String code = String.valueOf(redisService.get(TokenConstant.PHONE_CODE + "_" + phoen));
+        if (code == null) {
+            //验证码过期
+            throw new ServiceException(SysResultEnum.INVALID_CAPTCHA);
+        }
+        if (!code.equals(phoneCode)) {
+            //验证码不通过
+            throw new ServiceException(SysResultEnum.ERROR_CAPTCHA);
+        }
     }
 
 }

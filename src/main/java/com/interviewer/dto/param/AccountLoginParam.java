@@ -8,6 +8,10 @@ import lombok.Data;
 public class AccountLoginParam {
     @Schema(description = "用户名/手机号/学号")
     public String userName;
+
     @Schema(description = "密码")
     public String password;
+
+    @Schema(description = "验证码")
+    public String code;
 }

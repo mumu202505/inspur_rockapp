@@ -7,10 +7,9 @@
     <resultMap type="com.interviewer.entity.BaseUserEntity" id="baseUserMap">
         <result property="id" column="f_id"/>
         <result property="role" column="f_role"/>
-        <result property="userName" column="f_user_name"/>
         <result property="password" column="f_password"/>
         <result property="studentNumber" column="f_student_number"/>
-        <result property="name" column="f_name"/>
+        <result property="userName" column="f_user_name"/>
         <result property="gender" column="f_gender"/>
         <result property="mail" column="f_mail"/>
         <result property="phone" column="f_phone"/>

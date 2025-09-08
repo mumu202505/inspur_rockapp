@@ -29,7 +29,7 @@ public class BaseUserEntity implements Serializable {
 	@TableField("f_role")
 	private String role;
 	/**
-	 * 登录账号
+	 * 姓名
 	 */
 	@TableField("f_user_name")
 	private String userName;
@@ -43,11 +43,6 @@ public class BaseUserEntity implements Serializable {
 	 */
 	@TableField("f_student_number")
 	private String studentNumber;
-	/**
-	 * 姓名
-	 */
-	@TableField("f_name")
-	private String name;
 	/**
 	 * 性别
 	 */
@@ -93,6 +88,11 @@ public class BaseUserEntity implements Serializable {
 	 */
 	@TableField("f_major")
 	private String major;
+	/**
+	 * 班级
+	 */
+	@TableField("f_school_class")
+	private String schoolClass;
 	/**
 	 * 起始就读时间
 	 */
