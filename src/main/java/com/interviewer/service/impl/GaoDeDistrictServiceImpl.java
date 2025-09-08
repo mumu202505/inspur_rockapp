@@ -3,10 +3,10 @@ package com.interviewer.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.rockapp.entity.GaoDeDistrict;
-import com.rockapp.mapper.GaoDeDistrictMapper;
-import com.rockapp.service.GaoDeDistrictService;
-import com.rockapp.utils.HttpRequestUtil;
+import com.interviewer.entity.GaoDeDistrict;
+import com.interviewer.mapper.GaoDeDistrictMapper;
+import com.interviewer.service.GaoDeDistrictService;
+import com.interviewer.utils.HttpRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
