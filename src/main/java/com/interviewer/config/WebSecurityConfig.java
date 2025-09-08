@@ -6,14 +6,19 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.firewall.HttpFirewall;
@@ -32,10 +37,18 @@ import java.util.Arrays;
  */
 @Configuration
 @EnableWebSecurity
-//@EnableMethodSecurity(prePostEnabled = true) // 替换 @EnableGlobalMethodSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationTokenFilter;
+
+    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationTokenFilter) {
+        this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
+    }
+
+    @Value("${swagger.auth.username}")
+    private String swaggerUsername;
+
+    @Value("${swagger.auth.password}")
+    private String swaggerPassword;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -78,19 +91,30 @@ public class WebSecurityConfig {
                         // 禁用TRACE方法
                         .requestMatchers(HttpMethod.TRACE).denyAll()
 
-                        // 路径权限规则
-                        .requestMatchers("/").authenticated()
+                        // Swagger相关路径需要认证
                         .requestMatchers(
-                                "/public/**",
-                                "/universality/**",
-                                "/product/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**"
+                        ).authenticated()
+
+                        // 其他公共路径
+                        .requestMatchers(
+                                "/public/**",
+                                "/universality/**",
+                                "/product/**"
                         ).permitAll()
+
+                        // 根路径需要认证
+                        .requestMatchers("/").authenticated()
+
                         .anyRequest().authenticated()
+                )
+                // 为Swagger页面添加HTTP基本认证
+                .httpBasic(httpBasic -> httpBasic
+                        .realmName("Swagger API Documentation")
                 )
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
@@ -100,7 +124,19 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    // CORS配置（确保预检请求通过）
+    // 创建内存用户用于Swagger认证
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user = User.builder()
+                .username(swaggerUsername) // 设置用户名
+                .password(passwordEncoder().encode(swaggerPassword)) // 设置密码
+                .roles("SWAGGER") // 设置角色
+                .build();
+
+        return new InMemoryUserDetailsManager(user);
+    }
+
+    // CORS配置
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -111,5 +147,4 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
 }

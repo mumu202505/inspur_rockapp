@@ -27,7 +27,10 @@ springdoc:
 security:
   headers:
     content-security-policy: "default-src 'self'; script-src 'self' https://trusted.cdn.example.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'; form-action 'self'"
-
+swagger:
+  auth:
+    username: admin
+    password: admin@123
 yxsb:
   # 请求地址
   url: http://192.168.188.61:9001/interviewer/
