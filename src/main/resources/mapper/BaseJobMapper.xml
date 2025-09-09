@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.interviewer.mapper.BaseJobMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.interviewer.entity.BaseJobEntity" id="baseJobMap">
+        <result property="id" column="f_id"/>
+        <result property="jobName" column="f_job_name"/>
+        <result property="jobType" column="f_job_type"/>
+        <result property="jobRequire" column="f_job_require"/>
+        <result property="companyName" column="f_company_name"/>
+        <result property="companySynopsis" column="f_company_synopsis"/>
+        <result property="createUserName" column="f_create_user_name"/>
+        <result property="createTime" column="f_create_time"/>
+        <result property="lastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="lastModifyTime" column="f_last_modify_time"/>
+        <result property="isDelete" column="f_is_delete"/>
+    </resultMap>
+
+
+</mapper>

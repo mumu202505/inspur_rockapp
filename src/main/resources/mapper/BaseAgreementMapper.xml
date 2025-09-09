@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.interviewer.mapper.BaseAgreementMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.interviewer.entity.BaseAgreementEntity" id="baseAgreementMap">
+        <result property="fId" column="f_id"/>
+        <result property="fAgreementName" column="f_agreement_name"/>
+        <result property="fAgreementType" column="f_agreement_type"/>
+        <result property="fAgreementContent" column="f_agreement_content"/>
+        <result property="fCreateUserName" column="f_create_user_name"/>
+        <result property="fCreateTime" column="f_create_time"/>
+        <result property="fLastModifyUserName" column="f_last_modify_user_name"/>
+        <result property="fLastModifyTime" column="f_last_modify_time"/>
+        <result property="fIsDelete" column="f_is_delete"/>
+    </resultMap>
+
+
+</mapper>
